@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+{% block titulo_pagina %}Perfil de {{ perfil.user.nameUser }}{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+
+            <!-- 🔥 BOTÓN NUEVA PUBLICACIÓN -->
+            {% if perfil.user_id == current_user.idUser %}
+            <div class="d-flex justify-content-end mb-3">
+                <a href="/post/add" class="btn btn-success">
+                    <i class="bi bi-plus-circle"></i> Nueva publicación
+                </a>
+            </div>
+            {% endif %}
+
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h3>Perfil de {{ perfil.user.nameUser }}</h3>
+                    {% if perfil.user_id == current_user.idUser %}
+                    <a href="{{ url_for('perfil.edit', id=perfil.idPerfil) }}" class="btn btn-primary btn-sm">
+                        Editar Perfil
+                    </a>
+                    {% endif %}
+                </div>
+
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <h5>Información del Usuario</h5>
+                            <p><strong>Nombre:</strong> {{ perfil.user.nameUser }}</p>
+                            <p><strong>Email:</strong> {{ perfil.user.email }}</p>
+                        </div>
+
+                        <div class="col-md-8">
+                            <h5>Biografía</h5>
+                            {% if perfil.bio %}
+                            <div class="bg-light p-3 rounded">
+                                {{ perfil.bio }}
+                            </div>
+                            {% else %}
+                            <div class="alert alert-secondary">
+                                <em>Este usuario aún no ha escrito su biografía.</em>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <!-- 🔥 PUBLICACIONES -->
+                    <hr>
+                    <h5 class="mb-3">Publicaciones</h5>
+
+                    {% if perfil.user.publicaciones %}
+                    {% for post in perfil.user.publicaciones %}
+                    <div class="card mb-3 shadow-sm">
+                        <div class="card-body">
+
+                            <h5 class="card-title">{{ post.titulo }}</h5>
+                            <p class="card-text">{{ post.contenido }}</p>
+
+                            <!-- 🔥 ETIQUETAS CLICKEABLES -->
+                            <div class="mt-2">
+                                {% for e in post.etiquetas %}
+                                <a href="{{ url_for('publicacion.por_etiqueta', nombre=e.nombre) }}"
+                                    class="badge bg-secondary text-decoration-none me-1">
+                                    {{ e.nombre }}
+                                </a>
+                                {% endfor %}
+                            </div>
+
+                            {% if perfil.user_id == current_user.idUser %}
+                            <div class="mt-3">
+                                <a href="{{ url_for('publicacion.edit_post', id=post.id) }}" class="btn btn-sm btn-primary">
+                                    <i class="bi bi-pencil"></i> Editar
+                                </a>
+                                <a href="{{ url_for('publicacion.delete_post', id=post.id) }}" class="btn btn-sm btn-danger" onclick="return confirm('¿Seguro que quieres eliminar esta publicación?');">
+                                    <i class="bi bi-trash"></i> Eliminar
+                                </a>
+                            </div>
+                            {% endif %}
+
+                        </div>
+                    </div>
+                    {% endfor %}
+                    {% else %}
+                    <div class="alert alert-info">
+                        No hay publicaciones aún.
+                    </div>
+                    {% endif %}
+
+                </div>
+
+                <div class="card-footer">
+                    <a href="{{ url_for('perfil.index') }}" class="btn btn-secondary">
+                        ← Volver a Perfiles
+                    </a>
+                    {% if perfil.user_id == current_user.idUser %}
+                    <a href="{{ url_for('perfil.mi_perfil') }}" class="btn btn-primary ms-2">
+                        Mi Perfil
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block titulo_pagina %}Etiqueta: {{ etiqueta.nombre }}{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+
+    <h3>Publicaciones con etiqueta: "{{ etiqueta.nombre }}"</h3>
+
+    <hr>
+
+    {% if publicaciones %}
+    {% for post in publicaciones %}
+    <div class="card mb-3 shadow-sm">
+        <div class="card-body">
+
+            <h5>{{ post.titulo }}</h5>
+            <p>{{ post.contenido }}</p>
+
+            <small>
+                Por: {{ post.user.nameUser }}
+            </small>
+
+        </div>
+    </div>
+    {% endfor %}
+    {% else %}
+    <div class="alert alert-info">
+        No hay publicaciones con esta etiqueta.
+    </div>
+    {% endif %}
+
+</div>
+{% endblock %}

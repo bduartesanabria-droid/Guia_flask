@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block titulo_pagina %}Editar Publicación{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <form method="POST">
+                <div class="mb-3">
+                    <label class="form-label">Título</label>
+                    <input type="text" name="titulo" class="form-control" value="{{ post.titulo }}" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Contenido</label>
+                    <textarea name="contenido" class="form-control" rows="5" required>{{ post.contenido }}</textarea>
+                </div>
+                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                    <a href="{{ url_for('perfil.mi_perfil') }}" class="btn btn-secondary me-md-2">Cancelar</a>
+                    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

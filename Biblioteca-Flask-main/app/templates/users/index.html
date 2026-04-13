@@ -1,0 +1,158 @@
+{% extends "base.html" %}
+{% block titulo_pagina %}Lista de Usuarios{% endblock %}
+
+{% block content %}
+
+<div class="text-start">
+    <a href="{{ url_for('user.add') }}" class="btn btn-primary btn-sm mb-1">
+        <i class="bi bi-person-plus"></i> Agregar usuario
+    </a>
+
+    <!-- Botón lector QR -->
+    <a href="#" class="btn btn-sm btn-success mb-1" data-bs-toggle="modal" data-bs-target="#qrReaderModal">
+        <i class="bi bi-qr-code-scan"></i> Usar Lector de QR
+    </a>
+</div>
+
+<input type="text" id="searchInput" class="form-control mb-3" placeholder="Buscar usuario.">
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Contraseña</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+
+    <tbody id="userTable">
+        {% for user in data %}
+        <tr>
+            <td>{{ user.idUser }}</td>
+            <td>{{ user.nameUser }}</td>
+            <td>********</td>
+            <td>
+
+                <!-- VER -->
+                <a href="{{ url_for('user.detail', id=user.idUser) }}" class="btn btn-success btn-sm mb-1">
+                    <i class="bi bi-person"></i>
+                </a>
+
+                <!-- EDITAR -->
+                <a href="{{ url_for('user.edit', id=user.idUser) }}" class="btn btn-primary btn-sm mb-1">
+                    <i class="bi bi-pencil-square"></i>
+                </a>
+
+                <!-- ELIMINAR -->
+                <a href="{{ url_for('user.delete', id=user.idUser) }}" class="btn btn-danger btn-sm mb-1">
+                    <i class="bi bi-trash"></i>
+                </a>
+
+                <!-- QR -->
+                <button type="button" class="btn btn-info btn-sm mb-1" data-bs-toggle="modal"
+                    data-bs-target="#qrModal{{ user.idUser }}">
+                    <i class="bi bi-qr-code"></i>
+                </button>
+
+                <!-- MODAL QR -->
+                <div class="modal fade" id="qrModal{{ user.idUser }}" tabindex="-1">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+
+                            <div class="modal-header">
+                                <h5 class="modal-title">QR de {{ user.nameUser }}</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                            </div>
+
+                            <div class="modal-body text-center">
+                                <img src="{{ url_for('user.generate_qr', id=user.idUser) }}" class="img-fluid">
+                            </div>
+
+                            <div class="modal-footer">
+                                <button class="btn btn-secondary btn-sm w-100" data-bs-dismiss="modal">Cerrar</button>
+                                <a href="{{ url_for('user.generate_qr', id=user.idUser) }}"
+                                    class="btn btn-primary btn-sm w-100" download="qr_{{ user.nameUser }}.png">
+                                    Descargar
+                                </a>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<!-- BUSCADOR -->
+<script>
+    document.getElementById('searchInput').addEventListener('keyup', function () {
+        const searchValue = this.value.toLowerCase();
+        const rows = document.querySelectorAll('#userTable tr');
+
+        rows.forEach(row => {
+            const userName = row.querySelector('td:nth-child(2)').textContent.toLowerCase();
+            row.style.display = userName.includes(searchValue) ? '' : 'none';
+        });
+    });
+</script>
+
+<!-- MODAL LECTOR QR -->
+<div class="modal fade" id="qrReaderModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title">Lector de Código QR</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="modal-body">
+                <div id="reader" style="width: 100%;"></div>
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    let html5QrcodeScanner;
+
+    function onScanSuccess(decodedText) {
+        try {
+            const jsonObject = JSON.parse(decodedText);
+            const id = jsonObject.ID;
+            window.location.href = `/User/detail/${id}`;
+        } catch (error) {
+            alert("QR inválido");
+        }
+    }
+
+    function onScanFailure(error) {
+        console.warn(error);
+    }
+
+    const qrReaderModal = document.getElementById('qrReaderModal');
+
+    qrReaderModal.addEventListener('shown.bs.modal', function () {
+        html5QrcodeScanner = new Html5QrcodeScanner("reader", { fps: 10, qrbox: 250 });
+        html5QrcodeScanner.render(onScanSuccess, onScanFailure);
+    });
+
+    qrReaderModal.addEventListener('hidden.bs.modal', function () {
+        if (html5QrcodeScanner) {
+            html5QrcodeScanner.clear();
+        }
+    });
+</script>
+
+<script src="{{ url_for('static', filename='html5-qrcode.min.js') }}"></script>
+
+{% endblock %}

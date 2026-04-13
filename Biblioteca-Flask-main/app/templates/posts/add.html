@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% block titulo_pagina %}Crear Publicación{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+
+                <div class="card-header">
+                    <h3>Nueva Publicación</h3>
+                </div>
+
+                <div class="card-body">
+                    <form method="POST" class="needs-validation" novalidate>
+
+                        <!-- TÍTULO -->
+                        <div class="form-group mb-3">
+                            <label for="titulo" class="form-label">Título:</label>
+                            <input type="text" id="titulo" name="titulo" class="form-control"
+                                placeholder="Escribe el título de tu publicación" required>
+                            <div class="invalid-feedback">
+                                El título es obligatorio.
+                            </div>
+                        </div>
+
+                        <!-- CONTENIDO -->
+                        <div class="form-group mb-3">
+                            <label for="contenido" class="form-label">Contenido:</label>
+                            <textarea id="contenido" name="contenido" rows="5" class="form-control"
+                                placeholder="¿Qué quieres compartir?" required></textarea>
+                            <div class="invalid-feedback">
+                                El contenido es obligatorio.
+                            </div>
+                        </div>
+
+                        <!-- ETIQUETAS -->
+                        <div class="form-group mb-3">
+                            <label for="etiquetas" class="form-label">Etiquetas:</label>
+                            <input type="text" id="etiquetas" name="etiquetas" class="form-control"
+                                placeholder="Ej: python, flask, web">
+                            <div class="form-text">
+                                Separa las etiquetas con comas.
+                            </div>
+                        </div>
+
+                        <!-- BOTONES -->
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="btn btn-success">
+                                Publicar
+                            </button>
+                            <a href="{{ url_for('perfil.mi_perfil') }}" class="btn btn-secondary">
+                                Cancelar
+                            </a>
+                        </div>
+
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- VALIDACIÓN IGUAL QUE PERFIL -->
+<script>
+    (function () {
+        'use strict'
+        var forms = document.querySelectorAll('.needs-validation')
+        Array.prototype.slice.call(forms)
+            .forEach(function (form) {
+                form.addEventListener('submit', function (event) {
+                    if (!form.checkValidity()) {
+                        event.preventDefault()
+                        event.stopPropagation()
+                    }
+                    form.classList.add('was-validated')
+                }, false)
+            })
+    })()
+</script>
+
+{% endblock %}

@@ -1,0 +1,62 @@
+    <!-- Menú de Navegación -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container-fluid">
+          <a class="navbar-brand" href="/">Biblioteca</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" 
+                  aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNavDropdown">
+              <ul class="navbar-nav">
+                  <!-- Usuarios -->
+                  <li class="nav-item dropdown">
+                      <a class="nav-link dropdown-toggle" href="#" id="navbarUsuarios" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                          Usuarios
+                      </a>
+                      <ul class="dropdown-menu" aria-labelledby="navbarUsuarios">
+                          <li><a class="dropdown-item" href="{{ url_for('user.index') }}">Listado</a></li>
+                          <li><a class="dropdown-item" href="{{ url_for('user.add') }}">Agregar</a></li>
+                      </ul>
+                  </li>
+                  <!-- Autores -->
+                  <li class="nav-item dropdown">
+                      <a class="nav-link dropdown-toggle" href="#" id="navbarAutores" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                          Autores
+                      </a>
+                  </li>
+                  <!-- Salas -->
+                  <li class="nav-item dropdown">
+                      <a class="nav-link dropdown-toggle" href="#" id="navbarSalas" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                          Salas
+                      </a>
+                      <ul class="dropdown-menu" aria-labelledby="navbarSalas">
+                          <li><a class="dropdown-item" href="{{ url_for('room.index') }}">Listado</a></li>
+                          <li><a class="dropdown-item" href="{{ url_for('room.add') }}">Agregar</a></li>
+                      </ul>
+                  </li>
+                  <!-- Perfiles -->
+                  <li class="nav-item dropdown">
+                      <a class="nav-link dropdown-toggle" href="#" id="navbarPerfiles" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                          Perfiles
+                      </a>
+                      <ul class="dropdown-menu" aria-labelledby="navbarPerfiles">
+                          <li><a class="dropdown-item" href="{{ url_for('perfil.index') }}">Listado</a></li>
+                          <li><a class="dropdown-item" href="{{ url_for('perfil.mi_perfil') }}">Mi Perfil</a></li>
+                          <li><hr class="dropdown-divider"></li>
+                          <li><a class="dropdown-item" href="{{ url_for('perfil.add') }}">Crear Perfil</a></li>
+                      </ul>
+                  </li>
+
+              </ul>
+              <ul class="navbar-nav ms-auto">
+                  {% if current_user.is_authenticated %}
+                  <li class="nav-item">
+                      <a class="nav-link btn btn-danger p-2 mx-1" href="{{ url_for('auth.logout') }}">
+                          <i class="bi bi-box-arrow-right"></i> Cerrar Sesión
+                      </a>
+                  </li>
+                  {% endif %}
+              </ul>
+          </div>
+      </div>
+    </nav>

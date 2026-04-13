@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es" class="h-100">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Aplicación</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap/css/bootstrap.css')}}">
+    
+    <link rel="stylesheet" href="{{ url_for('static', filename='all.min.css') }}"> 
+    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap-icons.min.css') }}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.12.1/font/bootstrap-icons.min.css">
+    <style>
+        body { background-color: #000000 !important; color: #ffffff !important; }
+        .bg-light { background-color: #000000 !important; color: #ffffff !important; }
+        .card { background-color: #111111 !important; border-color: #a8e6cf !important; color: #ffffff !important;}
+        .card-header, .card-header * { background-color: #a8e6cf !important; color: #000000 !important; font-weight: bold; }
+        .bg-primary { background-color: #a8e6cf !important; color: #000000 !important;}
+        .text-primary { color: #a8e6cf !important; }
+        h1, h2, h3, h4, h5, h6, label, p, span, div { color: #ffffff; }
+        .btn-primary, .btn-success, .btn-info, .btn-secondary { background-color: #a8e6cf !important; border-color: #a8e6cf !important; color: #000000 !important; font-weight: bold;}
+        .btn-primary:hover, .btn-success:hover, .btn-info:hover, .btn-secondary:hover { background-color: #7bc5ab !important; border-color: #7bc5ab !important; color: #000000 !important;}
+        .btn-danger { background-color: #ff6b6b !important; border-color: #ff6b6b !important; color: #000 !important; font-weight: bold;}
+        .table { color: #ffffff !important; }
+        td, th { background-color: #0d0d0d !important; color: #ffffff !important; border-color: #a8e6cf !important; }
+        .navbar { background-color: #000000 !important; border-bottom: 2px solid #a8e6cf; }
+        .navbar-dark .navbar-nav .nav-link { color: #ffffff !important; }
+        .navbar-dark .navbar-brand { color: #a8e6cf !important; font-weight: bold; }
+        .form-control { background-color: #1a1a1a !important; color: #ffffff !important; border: 1px solid #a8e6cf !important; }
+        .form-control:focus { background-color: #222 !important; color: #ffffff !important; border-color: #7bc5ab !important; box-shadow: 0 0 5px #a8e6cf !important; }
+        .dropdown-menu { background-color: #111 !important; border-color: #a8e6cf !important;}
+        .dropdown-item { color: #fff !important; }
+        .dropdown-item:hover { background-color: #a8e6cf !important; color: #000 !important; }
+        .footer { background-color: #000 !important; border-top: 1px solid #a8e6cf !important; }
+    </style>
+</head>
+
+<body class="d-flex flex-column h-100 bg-light">
+  
+  {% include 'menu.html' %}
+
+  <main class="flex-shrink-0">
+
+    <div class="container mt-4 mx-auto">
+
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}             
+          {% for category, message in messages %}
+            <div class="flash-message alert alert-{{ category }} alert-dismissible fade show" role="alert">
+              {{ message }}
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
+
+      <div class="row justify-content-center">
+        <div class="col-md-10">
+          <div class="card shadow-sm border border-2 border-primary">
+            <div class="card-header bg-primary text-white">
+              <h4 class="mb-0 text-center">{% block titulo_pagina %}{% endblock %}</h4>
+            </div>
+            <div class="card-body">
+              <div class="container-fluid p-3">
+
+                {% block content %}
+                {% endblock %}
+                
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer mt-auto py-3 bg-dark text-white">
+    <div class="container text-center">
+      <span class="text-white">&copy; 2024 Mi Aplicación. Esta obra está bajo una <a href="http://creativecommons.org/licenses/by/4.0/" class="text-white">Licencia Creative Commons Atribución 4.0 Internacional</a>.</span>
+    </div>
+  </footer>
+
+  <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.bundle.js') }}"></script>
+
+</body>
+</html>

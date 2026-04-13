@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block titulo_pagina %}Panel de Control{% endblock %}
+
+{% block content %}
+<div class="container mt-5 text-center">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card p-5">
+                <h2 class="display-4 mb-4">¡Bienvenido, {{ current_user.nameUser }}!</h2>
+                <p class="lead mb-4 text-white">Nos alegra tenerte de vuelta. Aquí puedes acceder rápidamente a tu información haciendo clic en el botón inferior.</p>
+                <div>
+                    <a href="{{ url_for('perfil.mi_perfil') }}" class="btn btn-primary btn-lg px-4 py-2">
+                        <i class="bi bi-person-lines-fill"></i> Ir a mi perfil
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
